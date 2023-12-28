@@ -1,0 +1,85 @@
+﻿@page "/page2"
+
+<PageTitle>Page 2</PageTitle>
+
+<form>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-3 mb-3">
+                <div class="form-check form-check-inline">
+                    <input id="cbF1" class="form-check-input" type="checkbox"
+                           name="flag"
+                           value="flag1"
+                           autocomplete="off"
+                           checked="@TypedFlags.HasFlag(FlagType.Flag1)" />
+                    <label for="cbF1" class="form-check-label">Flag1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="cbF2" class="form-check-input" type="checkbox"
+                           name="flag"
+                           value="flag2"
+                           autocomplete="off"
+                           checked="@TypedFlags.HasFlag(FlagType.Flag2)" />
+                    <label for="cbF2" class="form-check-label">Flag2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="cbF3" class="form-check-input" type="checkbox"
+                           name="flag"
+                           value="flag3"
+                           autocomplete="off"
+                           checked="@TypedFlags.HasFlag(FlagType.Flag3)" />
+                    <label for="cbF3" class="form-check-label">Flag3</label>
+                </div>
+            </div>
+            <div class="col-lg-2 text-center mb-3">
+                <button class="btn btn-primary text-nowrap" type="submit">Apply</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    [Flags]
+    public enum FlagType
+    {
+        None = 0,
+        Flag1 = 1,
+        Flag2 = 2,
+        Flag3 = 4,
+    }
+
+    [SupplyParameterFromQuery(Name = "start")]
+    private DateTime? DateStart { get; set; } = null;
+
+    [SupplyParameterFromQuery(Name = "end")]
+    private DateTime? DateEnd { get; set; } = null;
+
+    [SupplyParameterFromQuery(Name = "flag")]
+    private string[] FlagValues { get; set; } = new string[0];
+
+    private FlagType TypedFlags
+    {
+        get
+        {
+            FlagType flags = FlagType.None;
+            foreach (var v in FlagValues)
+            {
+                switch (v)
+                {
+                    case "flag1":
+                        flags |= FlagType.Flag1;
+                        break;
+                    case "flag2":
+                        flags |= FlagType.Flag2;
+                        break;
+                    case "flag3":
+                        flags |= FlagType.Flag3;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return flags;
+        }
+    }
+}

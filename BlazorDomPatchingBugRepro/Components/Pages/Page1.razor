@@ -1,0 +1,76 @@
+﻿@page "/page1"
+
+<PageTitle>Page 1</PageTitle>
+
+<form>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-4 mb-3">
+                <div class="form-check form-check-inline">
+                    <input id="rbFoo" class="form-check-input" type="radio"
+                           name="choice"
+                           value="foo"
+                           autocomplete="off"
+                           checked="@(TypedChoice == ChoiceType.Foo)" />
+                    <label class="form-check-label" for="rbFoo">Foo</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="rbBar" class="form-check-input" type="radio"
+                           name="choice"
+                           value="bar"
+                           autocomplete="off"
+                           checked="@(TypedChoice == ChoiceType.Bar)" />
+                    <label class="form-check-label" for="rbBar">Bar</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input id="rbBaz" class="form-check-input" type="radio"
+                           name="choice"
+                           value="baz"
+                           autocomplete="off"
+                           checked="@(TypedChoice == ChoiceType.Baz)" />
+                    <label class="form-check-label" for="rbBaz">Baz</label>
+                </div>
+            </div>
+            <div class="col-lg-2 text-center mb-3">
+                <button class="btn btn-primary text-nowrap" type="submit">Apply</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    enum ChoiceType
+    {
+        None = 0,
+        Foo,
+        Bar,
+        Baz,
+    }
+
+    [SupplyParameterFromQuery(Name = "start")]
+    private DateTime? DateStart { get; set; } = null;
+
+    [SupplyParameterFromQuery(Name = "end")]
+    private DateTime? DateEnd { get; set; } = null;
+
+    [SupplyParameterFromQuery(Name = "choice")]
+    private string ChoiceValue { get; set; } = string.Empty;
+
+    private ChoiceType TypedChoice
+    {
+        get
+        {
+            switch (ChoiceValue)
+            {
+                case "foo":
+                    return ChoiceType.Foo;
+                case "bar":
+                    return ChoiceType.Bar;
+                case "baz":
+                    return ChoiceType.Baz;
+                default:
+                    return ChoiceType.None;
+            }
+        }
+    }
+}

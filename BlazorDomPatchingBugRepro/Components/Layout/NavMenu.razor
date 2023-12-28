@@ -1,0 +1,24 @@
+﻿@inject NavigationManager _navigation
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+    <div class="container-fluid">
+        <div class="navbar-nav mx-auto">
+            <a class="@GetNavClass("/")" href="" Match="NavLinkMatch.All">
+                Home
+            </a>
+            <a class="@GetNavClass("/page1")" href="/page1">
+                Page1
+            </a>
+            <a class="@GetNavClass("/page2")" href="/page2">
+                Page2
+            </a>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private string GetNavClass(string path)
+    {
+        var uri = _navigation.ToAbsoluteUri(_navigation.Uri);
+        return uri.LocalPath == path ? "nav-link active" : "nav-link";
+    }
+}
